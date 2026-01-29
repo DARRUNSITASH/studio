@@ -1,4 +1,5 @@
 'use client';
+import { useRouter } from 'next/navigation';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -15,7 +16,12 @@ import { useTranslation } from '@/hooks/use-translation';
 
 export function UserNav() {
   const { t } = useTranslation();
+  const router = useRouter();
   const userAvatar = PlaceHolderImages.find((img) => img.id === 'user-avatar-1');
+
+  const handleLogout = () => {
+    router.push('/');
+  };
 
   return (
     <DropdownMenu>
@@ -44,7 +50,7 @@ export function UserNav() {
           <DropdownMenuItem>{t('settings')}</DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>{t('logout')}</DropdownMenuItem>
+        <DropdownMenuItem onClick={handleLogout}>{t('logout')}</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

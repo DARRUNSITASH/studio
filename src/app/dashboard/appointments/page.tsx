@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import Link from 'next/link';
 import {
   Card,
@@ -12,7 +12,6 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { initialAppointments } from '@/lib/data';
 import type { Appointment } from '@/lib/types';
 import { Video, MessageSquare, Building, Calendar, Clock, Check, X } from 'lucide-react';
 import { format } from 'date-fns';
@@ -34,6 +33,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { AppContext } from '@/context/AppContext';
 
 const AppointmentCard = ({
   appointment,
@@ -132,7 +132,7 @@ const AppointmentCard = ({
 
 export default function AppointmentsPage() {
   const { t } = useTranslation();
-  const [appointments, setAppointments] = useState<Appointment[]>(initialAppointments);
+  const { appointments, setAppointments } = useContext(AppContext);
   const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null);
   const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
   const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
@@ -164,6 +164,12 @@ export default function AppointmentsPage() {
   const pastAppointments = appointments.filter(
     (a) => a.status === 'completed' || a.status === 'cancelled'
   );
+  
+    const getConsultationType = (type: Appointment['type']) => {
+    const typeKey = `${type}-consultation`;
+    return t(typeKey);
+  }
+
 
   return (
     <>

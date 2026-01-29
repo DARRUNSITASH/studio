@@ -8,9 +8,10 @@ import { useTranslation } from "@/hooks/use-translation";
 
 type DoctorCardProps = {
   doctor: Doctor;
+  onBook: (doctor: Doctor) => void;
 };
 
-export function DoctorCard({ doctor }: DoctorCardProps) {
+export function DoctorCard({ doctor, onBook }: DoctorCardProps) {
   const { t } = useTranslation();
   const getAvailabilityBadge = (
     availability: "available" | "soon" | "unavailable"
@@ -39,20 +40,19 @@ export function DoctorCard({ doctor }: DoctorCardProps) {
 
   return (
     <Card className="transition-all hover:shadow-lg overflow-hidden group">
-      <div className="relative w-full h-48">
+      <CardHeader className="items-center text-center p-6">
         <Image
           src={doctor.avatarUrl}
           alt={`Portrait of ${doctor.name}`}
-          fill
-          className="object-cover group-hover:scale-105 transition-transform duration-300"
+          width={96}
+          height={96}
+          className="rounded-full mb-4 border-4 border-background shadow-md"
           data-ai-hint="doctor portrait"
         />
-      </div>
-      <CardHeader>
-          <CardTitle>{doctor.name}</CardTitle>
-          <CardDescription>{doctor.specialty}</CardDescription>
+        <CardTitle>{doctor.name}</CardTitle>
+        <CardDescription>{doctor.specialty}</CardDescription>
       </CardHeader>
-      <CardContent className="pt-0 space-y-4 text-sm">
+      <CardContent className="pt-0 space-y-4 text-sm px-6 pb-6">
         <div className="space-y-2 text-muted-foreground">
              <div className="flex items-center gap-2">
                 <MapPin className="h-4 w-4" />
@@ -65,7 +65,7 @@ export function DoctorCard({ doctor }: DoctorCardProps) {
         </div>
         <div className="flex items-center justify-between pt-2">
             {getAvailabilityBadge(doctor.availability)}
-            <Button size="sm">
+            <Button size="sm" onClick={() => onBook(doctor)} disabled={doctor.availability === 'unavailable'}>
               {t('book-appointment')}
             </Button>
         </div>
