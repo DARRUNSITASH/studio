@@ -8,12 +8,14 @@ import { Badge } from '@/components/ui/badge';
 import { Loader2, AlertCircle, Lightbulb, Stethoscope } from 'lucide-react';
 import { getTriageSuggestion } from '@/app/dashboard/triage/actions';
 import type { AISymptomTriageOutput } from '@/ai/flows/ai-symptom-triage';
+import { useTranslation } from '@/hooks/use-translation';
 
 export function SymptomTriage() {
   const [symptoms, setSymptoms] = useState('');
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<AISymptomTriageOutput | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const { t } = useTranslation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,12 +55,17 @@ export function SymptomTriage() {
         return 'text-green-600';
     }
   };
+  
+  const getUrgencyDescription = (urgency: 'low' | 'medium' | 'emergency') => {
+      const key = `urgency-${urgency}-desc`;
+      return t(key);
+  }
 
   return (
     <div className="space-y-6">
       <form onSubmit={handleSubmit} className="space-y-4">
         <Textarea
-          placeholder="e.g., I have a headache, fever, and a sore throat for the last 2 days."
+          placeholder={t('symptom-triage-placeholder')}
           value={symptoms}
           onChange={(e) => setSymptoms(e.target.value)}
           rows={5}
@@ -68,10 +75,10 @@ export function SymptomTriage() {
           {loading ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Analyzing...
+              {t('analyzing')}
             </>
           ) : (
-            'Analyze Symptoms'
+            t('analyze-symptoms')
           )}
         </Button>
       </form>
@@ -81,7 +88,7 @@ export function SymptomTriage() {
           <CardHeader className="flex-row items-center gap-4 space-y-0">
              <AlertCircle className="h-6 w-6 text-destructive" />
              <div>
-                <CardTitle className="text-destructive">Error</CardTitle>
+                <CardTitle className="text-destructive">{t('error')}</CardTitle>
                 <CardDescription className="text-destructive/90">{error}</CardDescription>
              </div>
           </CardHeader>
@@ -91,30 +98,28 @@ export function SymptomTriage() {
       {result && (
         <Card>
           <CardHeader>
-            <CardTitle>Preliminary Assessment</CardTitle>
-            <CardDescription>Based on the symptoms you provided, here is our AI's suggestion.
+            <CardTitle>{t('preliminary-assessment')}</CardTitle>
+            <CardDescription>{t('preliminary-assessment-desc')}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-                <h3 className="font-semibold flex items-center gap-2"><AlertCircle className="h-5 w-5"/> Urgency Level</h3>
+                <h3 className="font-semibold flex items-center gap-2"><AlertCircle className="h-5 w-5"/> {t('urgency-level')}</h3>
                 <Badge variant={getUrgencyBadgeVariant(result.urgency)} className="text-base capitalize px-4 py-1">
                   {result.urgency}
                 </Badge>
                 <p className={`text-sm ${getUrgencyColor(result.urgency)}`}>
-                    {result.urgency === 'emergency' && 'This may be a medical emergency. Please seek immediate medical attention.'}
-                    {result.urgency === 'medium' && 'We recommend consulting a doctor soon.'}
-                    {result.urgency === 'low' && 'Your symptoms appear to be non-urgent, but consulting a doctor is advised.'}
+                    {getUrgencyDescription(result.urgency)}
                 </p>
             </div>
              <div className="space-y-2">
-                <h3 className="font-semibold flex items-center gap-2"><Stethoscope className="h-5 w-5"/> Suggested Specialist</h3>
+                <h3 className="font-semibold flex items-center gap-2"><Stethoscope className="h-5 w-5"/> {t('suggested-specialist')}</h3>
                 <p className="text-base">{result.suggestedSpecialist}</p>
             </div>
              <div className="space-y-2">
-                <h3 className="font-semibold flex items-center gap-2"><Lightbulb className="h-5 w-5"/> Pre-Consultation Summary</h3>
+                <h3 className="font-semibold flex items-center gap-2"><Lightbulb className="h-5 w-5"/> {t('pre-consultation-summary')}</h3>
                 <p className="text-sm text-muted-foreground p-4 bg-muted rounded-lg border">{result.preConsultationSummary}</p>
-                <p className="text-xs text-muted-foreground">You can share this summary with your doctor.</p>
+                <p className="text-xs text-muted-foreground">{t('share-summary-doctor')}</p>
             </div>
           </CardContent>
         </Card>

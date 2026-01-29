@@ -1,3 +1,4 @@
+'use client';
 import {
   Card,
   CardContent,
@@ -13,16 +14,19 @@ import { appointments } from '@/lib/data';
 import type { Appointment } from '@/lib/types';
 import { Video, MessageSquare, Building, Calendar, Clock, Check, X } from 'lucide-react';
 import { format } from 'date-fns';
+import { useTranslation } from '@/hooks/use-translation';
 
 const AppointmentCard = ({ appointment }: { appointment: Appointment }) => {
+  const { t } = useTranslation();
   const getStatusBadge = (status: Appointment['status']) => {
+    const statusKey = `status-${status}`;
     switch (status) {
       case 'upcoming':
-        return <Badge className="bg-blue-100 text-blue-800">{status}</Badge>;
+        return <Badge className="bg-blue-100 text-blue-800">{t(statusKey)}</Badge>;
       case 'completed':
-        return <Badge className="bg-green-100 text-green-800">{status}</Badge>;
+        return <Badge className="bg-green-100 text-green-800">{t(statusKey)}</Badge>;
       case 'cancelled':
-        return <Badge className="bg-red-100 text-red-800">{status}</Badge>;
+        return <Badge className="bg-red-100 text-red-800">{t(statusKey)}</Badge>;
     }
   };
 
@@ -36,6 +40,11 @@ const AppointmentCard = ({ appointment }: { appointment: Appointment }) => {
         return <Building className="h-4 w-4" />;
     }
   };
+
+  const getConsultationType = (type: Appointment['type']) => {
+    const typeKey = `${type}-consultation`;
+    return t(typeKey);
+  }
 
   return (
     <Card>
@@ -59,22 +68,22 @@ const AppointmentCard = ({ appointment }: { appointment: Appointment }) => {
         </div>
         <div className="flex items-center gap-2 capitalize">
             {getConsultationIcon(appointment.type)}
-            <span>{appointment.type} Consultation</span>
+            <span>{getConsultationType(appointment.type)}</span>
         </div>
       </CardContent>
       {appointment.status === 'upcoming' && (
         <CardFooter className="flex gap-2">
           <Button className="w-full">
-            <Check className="mr-2 h-4 w-4" /> Join Call
+            <Check className="mr-2 h-4 w-4" /> {t('join-call')}
           </Button>
           <Button variant="outline" className="w-full">
-            <X className="mr-2 h-4 w-4" /> Cancel
+            <X className="mr-2 h-4 w-4" /> {t('cancel-appointment')}
           </Button>
         </CardFooter>
       )}
        {appointment.status === 'completed' && (
         <CardFooter>
-          <Button variant="secondary" className="w-full">View Details</Button>
+          <Button variant="secondary" className="w-full">{t('view-details')}</Button>
         </CardFooter>
       )}
     </Card>
@@ -82,6 +91,7 @@ const AppointmentCard = ({ appointment }: { appointment: Appointment }) => {
 };
 
 export default function AppointmentsPage() {
+  const { t } = useTranslation();
   const upcomingAppointments = appointments.filter(
     (a) => a.status === 'upcoming'
   );
@@ -92,8 +102,8 @@ export default function AppointmentsPage() {
   return (
     <Tabs defaultValue="upcoming" className="space-y-4">
       <TabsList>
-        <TabsTrigger value="upcoming">Upcoming</TabsTrigger>
-        <TabsTrigger value="past">Past</TabsTrigger>
+        <TabsTrigger value="upcoming">{t('upcoming-appointments')}</TabsTrigger>
+        <TabsTrigger value="past">{t('past-appointments')}</TabsTrigger>
       </TabsList>
       <TabsContent value="upcoming">
         {upcomingAppointments.length > 0 ? (
@@ -103,7 +113,7 @@ export default function AppointmentsPage() {
             ))}
           </div>
         ) : (
-          <p className="text-muted-foreground">You have no upcoming appointments.</p>
+          <p className="text-muted-foreground">{t('no-upcoming-appointments')}</p>
         )}
       </TabsContent>
       <TabsContent value="past">
@@ -114,7 +124,7 @@ export default function AppointmentsPage() {
             ))}
           </div>
         ) : (
-             <p className="text-muted-foreground">You have no past appointments.</p>
+             <p className="text-muted-foreground">{t('no-past-appointments')}</p>
         )}
       </TabsContent>
     </Tabs>

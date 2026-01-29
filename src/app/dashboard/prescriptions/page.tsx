@@ -1,3 +1,4 @@
+'use client';
 import {
   Card,
   CardContent,
@@ -11,8 +12,10 @@ import { prescriptions } from '@/lib/data';
 import { Download, Calendar, Pill } from 'lucide-react';
 import { format } from 'date-fns';
 import { Separator } from '@/components/ui/separator';
+import { useTranslation } from '@/hooks/use-translation';
 
 export default function PrescriptionsPage() {
+  const { t } = useTranslation();
   return (
     <div className="space-y-6">
       {prescriptions.length > 0 ? (
@@ -20,7 +23,7 @@ export default function PrescriptionsPage() {
           {prescriptions.map((p) => (
             <Card key={p.id}>
               <CardHeader>
-                <CardTitle>Prescription from {p.doctorName}</CardTitle>
+                <CardTitle>{t('prescription-from', { doctorName: p.doctorName })}</CardTitle>
                 <CardDescription className="flex items-center gap-2">
                     <Calendar className="h-4 w-4" /> 
                     <span>{format(new Date(p.date), 'MMMM dd, yyyy')}</span>
@@ -28,7 +31,7 @@ export default function PrescriptionsPage() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                    <h4 className="font-semibold">Medications</h4>
+                    <h4 className="font-semibold">{t('medications')}</h4>
                     <ul className="space-y-3">
                         {p.medicines.map((med, index) => (
                             <li key={index} className="text-sm">
@@ -36,7 +39,7 @@ export default function PrescriptionsPage() {
                                     <Pill className="h-4 w-4 mt-1 text-primary"/>
                                     <div>
                                         <p className="font-medium">{med.name}</p>
-                                        <p className="text-muted-foreground">{med.dosage} for {med.duration}</p>
+                                        <p className="text-muted-foreground">{t('dosage-for-duration', { dosage: med.dosage, duration: med.duration })}</p>
                                     </div>
                                 </div>
                                 {index < p.medicines.length - 1 && <Separator className="my-3"/>}
@@ -47,7 +50,7 @@ export default function PrescriptionsPage() {
               </CardContent>
               <CardFooter>
                 <Button className="w-full">
-                  <Download className="mr-2 h-4 w-4" /> Download Prescription
+                  <Download className="mr-2 h-4 w-4" /> {t('download-prescription')}
                 </Button>
               </CardFooter>
             </Card>
@@ -56,7 +59,7 @@ export default function PrescriptionsPage() {
       ) : (
         <Card>
             <CardContent className="p-6">
-                 <p className="text-muted-foreground text-center">You have no prescriptions.</p>
+                 <p className="text-muted-foreground text-center">{t('no-prescriptions')}</p>
             </CardContent>
         </Card>
       )}

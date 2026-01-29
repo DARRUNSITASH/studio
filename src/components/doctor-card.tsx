@@ -4,12 +4,14 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Doctor } from "@/lib/types";
 import { MapPin, User, Stethoscope, Clock } from "lucide-react";
+import { useTranslation } from "@/hooks/use-translation";
 
 type DoctorCardProps = {
   doctor: Doctor;
 };
 
 export function DoctorCard({ doctor }: DoctorCardProps) {
+  const { t } = useTranslation();
   const getAvailabilityBadge = (
     availability: "available" | "soon" | "unavailable"
   ) => {
@@ -17,19 +19,19 @@ export function DoctorCard({ doctor }: DoctorCardProps) {
       case "available":
         return (
           <Badge variant="default" className="bg-green-100 text-green-800">
-            Available
+            {t('availability-available')}
           </Badge>
         );
       case "soon":
         return (
           <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">
-            Available Soon
+            {t('availability-soon')}
           </Badge>
         );
       case "unavailable":
         return (
           <Badge variant="destructive" className="bg-red-100 text-red-800">
-            Unavailable
+            {t('availability-unavailable')}
           </Badge>
         );
     }
@@ -71,7 +73,7 @@ export function DoctorCard({ doctor }: DoctorCardProps) {
              </div>
              <div className="flex items-center gap-2">
                 <Clock className="h-4 w-4" />
-                <span>{doctor.distance} km away</span>
+                <span>{t('km-away', { distance: doctor.distance })}</span>
              </div>
              <div className="flex items-center gap-2">
                 {getAvailabilityBadge(doctor.availability)}
@@ -79,7 +81,7 @@ export function DoctorCard({ doctor }: DoctorCardProps) {
         </div>
 
         <Button className="w-full" variant="secondary">
-          Book Appointment
+          {t('book-appointment')}
         </Button>
       </CardContent>
     </Card>

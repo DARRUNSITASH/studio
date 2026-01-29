@@ -12,7 +12,7 @@ type Translations = { [key: string]: string };
 type I18nContextType = {
   locale: Locale;
   setLocale: (locale: Locale) => void;
-  t: (key: string) => string;
+  t: (key: string, replacements?: { [key: string]: string | number }) => string;
 };
 
 export const I18nContext = createContext<I18nContextType | null>(null);
@@ -27,8 +27,15 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   const [locale, setLocale] = useState<Locale>('en');
 
   const t = useMemo(
-    () => (key: string) => {
-      return messages[locale][key] || key;
+    () => (key: string, replacements?: { [key: string]: string | number }) => {
+      let translation = messages[locale][key] || key;
+      if (replacements) {
+        Object.keys(replacements).forEach(rKey => {
+          const regex = new RegExp(`{${rKey}}`, 'g');
+          translation = translation.replace(regex, String(replacements[rKey]));
+        });
+      }
+      return translation;
     },
     [locale]
   );
