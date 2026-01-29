@@ -9,7 +9,7 @@ const getAvatarUrl = (id: string) => {
 export const doctors: Doctor[] = [
   {
     id: '1',
-    name: 'Dr. Emily Carter',
+    name: 'Dr. Priya Sharma',
     specialty: 'General Physician',
     clinic: 'City Central Clinic',
     distance: 2.5,
@@ -18,7 +18,7 @@ export const doctors: Doctor[] = [
   },
   {
     id: '2',
-    name: 'Dr. Ben Adams',
+    name: 'Dr. Rohan Gupta',
     specialty: 'Cardiologist',
     clinic: 'Heartbeat Hospital',
     distance: 5.1,
@@ -27,7 +27,7 @@ export const doctors: Doctor[] = [
   },
   {
     id: '3',
-    name: 'Dr. Chloe Davis',
+    name: 'Dr. Anjali Patel',
     specialty: 'Dermatologist',
     clinic: 'Skin & Care',
     distance: 1.8,
@@ -36,7 +36,7 @@ export const doctors: Doctor[] = [
   },
   {
     id: '4',
-    name: 'Dr. Samuel Rodriguez',
+    name: 'Dr. Vikram Singh',
     specialty: 'Pediatrician',
     clinic: 'KidsHealth Clinic',
     distance: 7.3,
@@ -45,7 +45,7 @@ export const doctors: Doctor[] = [
   },
     {
     id: '5',
-    name: 'Dr. Olivia Chen',
+    name: 'Dr. Sunita Rao',
     specialty: 'General Physician',
     clinic: 'Greenwood Medical',
     distance: 4.2,
@@ -54,7 +54,7 @@ export const doctors: Doctor[] = [
   },
   {
     id: '6',
-    name: 'Dr. Marcus Wright',
+    name: 'Dr. Amit Kumar',
     specialty: 'Orthopedist',
     clinic: 'Bone & Joint Center',
     distance: 8.9,
@@ -66,7 +66,7 @@ export const doctors: Doctor[] = [
 export const appointments: Appointment[] = [
   {
     id: '1',
-    doctorName: 'Dr. Emily Carter',
+    doctorName: 'Dr. Priya Sharma',
     specialty: 'General Physician',
     clinic: 'City Central Clinic',
     date: '2024-08-15',
@@ -76,7 +76,7 @@ export const appointments: Appointment[] = [
   },
   {
     id: '2',
-    doctorName: 'Dr. Chloe Davis',
+    doctorName: 'Dr. Anjali Patel',
     specialty: 'Dermatologist',
     clinic: 'Skin & Care',
     date: '2024-08-16',
@@ -86,7 +86,7 @@ export const appointments: Appointment[] = [
   },
   {
     id: '3',
-    doctorName: 'Dr. Ben Adams',
+    doctorName: 'Dr. Rohan Gupta',
     specialty: 'Cardiologist',
     clinic: 'Heartbeat Hospital',
     date: '2024-07-20',
@@ -96,7 +96,7 @@ export const appointments: Appointment[] = [
   },
     {
     id: '4',
-    doctorName: 'Dr. Samuel Rodriguez',
+    doctorName: 'Dr. Vikram Singh',
     specialty: 'Pediatrician',
     clinic: 'KidsHealth Clinic',
     date: '2024-07-18',
@@ -106,7 +106,7 @@ export const appointments: Appointment[] = [
   },
     {
     id: '5',
-    doctorName: 'Dr. Emily Carter',
+    doctorName: 'Dr. Priya Sharma',
     specialty: 'General Physician',
     clinic: 'City Central Clinic',
     date: '2024-07-10',
@@ -119,7 +119,7 @@ export const appointments: Appointment[] = [
 export const prescriptions: Prescription[] = [
   {
     id: '1',
-    doctorName: 'Dr. Ben Adams',
+    doctorName: 'Dr. Rohan Gupta',
     date: '2024-07-20',
     medicines: [
       { name: 'Aspirin', dosage: '81mg once daily', duration: '30 days' },
@@ -128,7 +128,7 @@ export const prescriptions: Prescription[] = [
   },
   {
     id: '2',
-    doctorName: 'Dr. Samuel Rodriguez',
+    doctorName: 'Dr. Vikram Singh',
     date: '2024-07-18',
     medicines: [
       { name: 'Amoxicillin', dosage: '250mg three times daily', duration: '7 days' },

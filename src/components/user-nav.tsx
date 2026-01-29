@@ -25,16 +25,16 @@ export function UserNav() {
             {userAvatar && (
                  <AvatarImage src={userAvatar.imageUrl} alt="User Avatar" data-ai-hint={userAvatar.imageHint} />
             )}
-            <AvatarFallback>SN</AvatarFallback>
+            <AvatarFallback>RK</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">Sandeep N</p>
+            <p className="text-sm font-medium leading-none">Ravi Kumar</p>
             <p className="text-xs leading-none text-muted-foreground">
-              s.n@example.com
+              r.kumar@example.com
             </p>
           </div>
         </DropdownMenuLabel>

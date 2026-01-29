@@ -9,44 +9,44 @@
     {
       "id": "user-avatar-1",
       "description": "User avatar",
-      "imageUrl": "https://images.unsplash.com/photo-1539125530496-3ca408f9c2d9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxwcm9maWxlJTIwcG9ydHJhaXR8ZW58MHx8fHwxNzY5NjA0NDYzfDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "profile portrait"
+      "imageUrl": "https://images.unsplash.com/photo-1599566150163-29194dcaad36?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxJbmRpYW4lMjBtYWxlJTIwcG9ydHJhaXR8ZW58MHx8fHwxNzcwMDMwODE0fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "indian man"
     },
     {
       "id": "doctor-avatar-1",
-      "description": "Portrait of Dr. Emily Carter",
-      "imageUrl": "https://images.unsplash.com/photo-1560250097-0b93528c311a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxkb2N0b3IlMjBwb3J0cmFpdHxlbnwwfHx8fDE3Njk2MDMyMjd8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "doctor portrait"
+      "description": "Portrait of Dr. Priya Sharma",
+      "imageUrl": "https://images.unsplash.com/photo-1618255339999-9743c3c62b4c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxJbmRpYW4lMjBmZW1hbGUlMjBkb2N0b3J8ZW58MHx8fHwxNzcwMDMwNTYwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "indian doctor"
     },
     {
       "id": "doctor-avatar-2",
-      "description": "Portrait of Dr. Ben Adams",
-      "imageUrl": "https://images.unsplash.com/photo-1550831107-1553da8c8464?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxkb2N0b3IlMjBwb3J0cmFpdHxlbnwwfHx8fDE3Njk2MDMyMjd8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "doctor portrait"
+      "description": "Portrait of Dr. Rohan Gupta",
+      "imageUrl": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxJbmRpYW4lMjBtYWxlJTIwZG9jdG9yfGVufDB8fHx8MTcwMzE5NTQyNnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "indian doctor"
     },
     {
       "id": "doctor-avatar-3",
-      "description": "Portrait of Dr. Chloe Davis",
-      "imageUrl": "https://images.unsplash.com/photo-1659353888906-adb3e0041693?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxmZW1hbGUlMjBkb2N0b3J8ZW58MHx8fHwxNzY5NjYxNDU1fDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "female doctor"
+      "description": "Portrait of Dr. Anjali Patel",
+      "imageUrl": "https://images.unsplash.com/photo-1624720114668-3729c4142c4c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxJbmRpYW4lMjBmZW1hbGUlMjBkb2N0b3J8ZW58MHx8fHwxNzcwMDMwNTYwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "indian doctor"
     },
     {
       "id": "doctor-avatar-4",
-      "description": "Portrait of Dr. Samuel Rodriguez",
-      "imageUrl": "https://images.unsplash.com/photo-1612363584451-cd060fb62018?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxtYWxlJTIwZG9jdG9yfGVufDB8fHx8MTc2OTYwODk0OHww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "male doctor"
+      "description": "Portrait of Dr. Vikram Singh",
+      "imageUrl": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxJbmRpYW4lMjBtYWxlJTIwZG9jdG9yfGVufDB8fHx8MTcwMzE5NTQyNnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "indian doctor"
     },
     {
       "id": "doctor-avatar-5",
-      "description": "Portrait of Dr. Olivia Chen",
-      "imageUrl": "https://images.unsplash.com/photo-1632054226038-ed6997bfce1f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxhc2lhbiUyMGRvY3RvcnxlbnwwfHx8fDE3Njk2NjkxMzh8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "asian doctor"
+      "description": "Portrait of Dr. Sunita Rao",
+      "imageUrl": "https://images.unsplash.com/photo-1622902046582-7456485b0521?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxJbmRpYW4lMjBmZW1hbGUlMjBkb2N0b3J8ZW58MHx8fHwxNzcwMDMwNTYwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "indian doctor"
     },
     {
       "id": "doctor-avatar-6",
-      "description": "Portrait of Dr. Marcus Wright",
-      "imageUrl": "https://images.unsplash.com/photo-1579165466949-3180a3d056d5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxibGFjayUyMGRvY3RvcnxlbnwwfHx8fDE3Njk2NjkxMzh8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "black doctor"
+      "description": "Portrait of Dr. Amit Kumar",
+      "imageUrl": "https://images.unsplash.com/photo-1582750421861-c549b6b33863?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxJbmRpYW4lMjBtYWxlJTIwZG9jdG9yfGVufDB8fHx8MTcwMzE5NTQyNnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "indian doctor"
     }
   ]
 }
