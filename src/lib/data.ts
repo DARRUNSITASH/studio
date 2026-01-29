@@ -63,7 +63,7 @@ export const doctors: Doctor[] = [
   },
 ];
 
-export const appointments: Appointment[] = [
+export const initialAppointments: Appointment[] = [
   {
     id: '1',
     doctorName: 'Dr. Priya Sharma',
@@ -73,6 +73,7 @@ export const appointments: Appointment[] = [
     time: '10:30 AM',
     status: 'upcoming',
     type: 'video',
+    meetLink: 'https://meet.google.com/new',
   },
   {
     id: '2',
@@ -83,6 +84,7 @@ export const appointments: Appointment[] = [
     time: '02:00 PM',
     status: 'upcoming',
     type: 'chat',
+    meetLink: 'https://meet.google.com/new',
   },
   {
     id: '3',
@@ -93,6 +95,7 @@ export const appointments: Appointment[] = [
     time: '11:00 AM',
     status: 'completed',
     type: 'video',
+    meetLink: 'https://meet.google.com/new',
   },
     {
     id: '4',
@@ -113,6 +116,7 @@ export const appointments: Appointment[] = [
     time: '04:30 PM',
     status: 'cancelled',
     type: 'video',
+    meetLink: 'https://meet.google.com/new',
   },
 ];
 

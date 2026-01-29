@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { prescriptions } from '@/lib/data';
+import type { Prescription } from '@/lib/types';
 import { Download, Calendar, Pill } from 'lucide-react';
 import { format } from 'date-fns';
 import { Separator } from '@/components/ui/separator';
@@ -16,6 +17,40 @@ import { useTranslation } from '@/hooks/use-translation';
 
 export default function PrescriptionsPage() {
   const { t } = useTranslation();
+
+  const handleDownload = (prescription: Prescription) => {
+    const prescriptionContent = `
+Prescription from: ${prescription.doctorName}
+Date: ${format(new Date(prescription.date), 'MMMM dd, yyyy')}
+
+------------------------------------
+Medications:
+------------------------------------
+${prescription.medicines
+  .map(
+    (med) => `
+- Medication: ${med.name}
+  Dosage: ${med.dosage}
+  Duration: ${med.duration}
+`
+  )
+  .join('\n')}
+
+------------------------------------
+This is a digitally generated prescription from MedCord.
+    `;
+
+    const blob = new Blob([prescriptionContent.trim()], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `medcord-prescription-${prescription.id}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="space-y-6">
       {prescriptions.length > 0 ? (
@@ -49,7 +84,7 @@ export default function PrescriptionsPage() {
                 </div>
               </CardContent>
               <CardFooter>
-                <Button className="w-full">
+                <Button className="w-full" onClick={() => handleDownload(p)}>
                   <Download className="mr-2 h-4 w-4" /> {t('download-prescription')}
                 </Button>
               </CardFooter>

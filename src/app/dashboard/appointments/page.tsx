@@ -1,4 +1,6 @@
 'use client';
+import { useState } from 'react';
+import Link from 'next/link';
 import {
   Card,
   CardContent,
@@ -10,13 +12,38 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { appointments } from '@/lib/data';
+import { initialAppointments } from '@/lib/data';
 import type { Appointment } from '@/lib/types';
 import { Video, MessageSquare, Building, Calendar, Clock, Check, X } from 'lucide-react';
 import { format } from 'date-fns';
 import { useTranslation } from '@/hooks/use-translation';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
-const AppointmentCard = ({ appointment }: { appointment: Appointment }) => {
+const AppointmentCard = ({
+  appointment,
+  onCancelClick,
+  onViewDetailsClick,
+}: {
+  appointment: Appointment;
+  onCancelClick: () => void;
+  onViewDetailsClick: () => void;
+}) => {
   const { t } = useTranslation();
   const getStatusBadge = (status: Appointment['status']) => {
     const statusKey = `status-${status}`;
@@ -73,17 +100,30 @@ const AppointmentCard = ({ appointment }: { appointment: Appointment }) => {
       </CardContent>
       {appointment.status === 'upcoming' && (
         <CardFooter className="flex gap-2">
-          <Button className="w-full">
-            <Check className="mr-2 h-4 w-4" /> {t('join-call')}
-          </Button>
-          <Button variant="outline" className="w-full">
+          {appointment.type !== 'in-person' && appointment.meetLink ? (
+            <Button className="w-full" asChild>
+              <Link href={appointment.meetLink} target="_blank" rel="noopener noreferrer">
+                <Check className="mr-2 h-4 w-4" /> {t('join-call')}
+              </Link>
+            </Button>
+          ) : (
+             <Button className="w-full" disabled>
+                <Check className="mr-2 h-4 w-4" /> {t('join-call')}
+              </Button>
+          )}
+          <Button variant="outline" className="w-full" onClick={onCancelClick}>
             <X className="mr-2 h-4 w-4" /> {t('cancel-appointment')}
           </Button>
         </CardFooter>
       )}
        {appointment.status === 'completed' && (
         <CardFooter>
-          <Button variant="secondary" className="w-full">{t('view-details')}</Button>
+          <Button variant="secondary" className="w-full" onClick={onViewDetailsClick}>{t('view-details')}</Button>
+        </CardFooter>
+      )}
+      {appointment.status === 'cancelled' && (
+        <CardFooter>
+          <Button variant="ghost" disabled className="w-full text-muted-foreground">{t('status-cancelled')}</Button>
         </CardFooter>
       )}
     </Card>
@@ -92,6 +132,32 @@ const AppointmentCard = ({ appointment }: { appointment: Appointment }) => {
 
 export default function AppointmentsPage() {
   const { t } = useTranslation();
+  const [appointments, setAppointments] = useState<Appointment[]>(initialAppointments);
+  const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null);
+  const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
+  const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
+
+  const handleCancel = (appointmentToCancel: Appointment) => {
+    setSelectedAppointment(appointmentToCancel);
+    setIsCancelDialogOpen(true);
+  };
+  
+  const handleConfirmCancel = () => {
+    if (!selectedAppointment) return;
+    setAppointments(currentAppointments => 
+      currentAppointments.map(app => 
+        app.id === selectedAppointment.id ? { ...app, status: 'cancelled' } : app
+      )
+    );
+    setIsCancelDialogOpen(false);
+    setSelectedAppointment(null);
+  };
+
+  const handleViewDetails = (appointmentToView: Appointment) => {
+    setSelectedAppointment(appointmentToView);
+    setIsDetailsDialogOpen(true);
+  };
+
   const upcomingAppointments = appointments.filter(
     (a) => a.status === 'upcoming'
   );
@@ -100,33 +166,85 @@ export default function AppointmentsPage() {
   );
 
   return (
-    <Tabs defaultValue="upcoming" className="space-y-4">
-      <TabsList>
-        <TabsTrigger value="upcoming">{t('upcoming-appointments')}</TabsTrigger>
-        <TabsTrigger value="past">{t('past-appointments')}</TabsTrigger>
-      </TabsList>
-      <TabsContent value="upcoming">
-        {upcomingAppointments.length > 0 ? (
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {upcomingAppointments.map((app) => (
-              <AppointmentCard key={app.id} appointment={app} />
-            ))}
-          </div>
-        ) : (
-          <p className="text-muted-foreground">{t('no-upcoming-appointments')}</p>
-        )}
-      </TabsContent>
-      <TabsContent value="past">
-       {pastAppointments.length > 0 ? (
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {pastAppointments.map((app) => (
-              <AppointmentCard key={app.id} appointment={app} />
-            ))}
-          </div>
-        ) : (
-             <p className="text-muted-foreground">{t('no-past-appointments')}</p>
-        )}
-      </TabsContent>
-    </Tabs>
+    <>
+      <Tabs defaultValue="upcoming" className="space-y-4">
+        <TabsList>
+          <TabsTrigger value="upcoming">{t('upcoming-appointments')}</TabsTrigger>
+          <TabsTrigger value="past">{t('past-appointments')}</TabsTrigger>
+        </TabsList>
+        <TabsContent value="upcoming">
+          {upcomingAppointments.length > 0 ? (
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {upcomingAppointments.map((app) => (
+                <AppointmentCard 
+                  key={app.id} 
+                  appointment={app} 
+                  onCancelClick={() => handleCancel(app)}
+                  onViewDetailsClick={() => {}}
+                />
+              ))}
+            </div>
+          ) : (
+            <p className="text-muted-foreground">{t('no-upcoming-appointments')}</p>
+          )}
+        </TabsContent>
+        <TabsContent value="past">
+        {pastAppointments.length > 0 ? (
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {pastAppointments.map((app) => (
+                <AppointmentCard 
+                  key={app.id} 
+                  appointment={app} 
+                  onCancelClick={() => {}}
+                  onViewDetailsClick={() => handleViewDetails(app)}
+                />
+              ))}
+            </div>
+          ) : (
+              <p className="text-muted-foreground">{t('no-past-appointments')}</p>
+          )}
+        </TabsContent>
+      </Tabs>
+
+      <AlertDialog open={isCancelDialogOpen} onOpenChange={setIsCancelDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure you want to cancel?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently cancel your appointment with {selectedAppointment?.doctorName}.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setSelectedAppointment(null)}>Back</AlertDialogCancel>
+            <AlertDialogAction onClick={handleConfirmCancel} className="bg-destructive hover:bg-destructive/90">Confirm Cancellation</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      <Dialog open={isDetailsDialogOpen} onOpenChange={(isOpen) => {
+        setIsDetailsDialogOpen(isOpen);
+        if (!isOpen) setSelectedAppointment(null);
+      }}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Appointment Details</DialogTitle>
+            {selectedAppointment && (
+              <DialogDescription>
+                Details for your {selectedAppointment.status} appointment with {selectedAppointment.doctorName}.
+              </DialogDescription>
+            )}
+          </DialogHeader>
+          {selectedAppointment && (
+            <div className="space-y-4 py-4 text-sm">
+              <p><strong>Doctor:</strong> {selectedAppointment.doctorName} ({selectedAppointment.specialty})</p>
+              <p><strong>Clinic:</strong> {selectedAppointment.clinic}</p>
+              <p><strong>Date:</strong> {format(new Date(selectedAppointment.date), 'MMMM dd, yyyy')} at {selectedAppointment.time}</p>
+              <p><strong>Type:</strong> <span className="capitalize">{getConsultationType(selectedAppointment.type)}</span></p>
+              <p><strong>Status:</strong> <span className="capitalize">{t(`status-${selectedAppointment.status}`)}</span></p>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }

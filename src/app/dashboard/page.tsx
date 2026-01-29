@@ -70,9 +70,11 @@ export default function DashboardPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Button variant="secondary" className="bg-accent text-accent-foreground hover:bg-accent/90">
-            <Video className="mr-2 h-4 w-4" /> {t('start-teleconsultation')}
-          </Button>
+          <Link href="https://meet.google.com/new" target="_blank" rel="noopener noreferrer">
+            <Button variant="secondary" className="bg-accent text-accent-foreground hover:bg-accent/90">
+              <Video className="mr-2 h-4 w-4" /> {t('start-teleconsultation')}
+            </Button>
+          </Link>
         </CardContent>
       </Card>
 

@@ -17,6 +17,7 @@ export type Appointment = {
   time: string;
   status: 'upcoming' | 'completed' | 'cancelled';
   type: 'video' | 'chat' | 'in-person';
+  meetLink?: string;
 };
 
 export type Prescription = {
