@@ -1,0 +1,138 @@
+import type { Doctor, Appointment, Prescription } from './types';
+import { PlaceHolderImages } from './placeholder-images';
+
+const getAvatarUrl = (id: string) => {
+    const image = PlaceHolderImages.find(img => img.id === id);
+    return image ? image.imageUrl : 'https://picsum.photos/seed/placeholder/100/100';
+}
+
+export const doctors: Doctor[] = [
+  {
+    id: '1',
+    name: 'Dr. Emily Carter',
+    specialty: 'General Physician',
+    clinic: 'City Central Clinic',
+    distance: 2.5,
+    availability: 'available',
+    avatarUrl: getAvatarUrl('doctor-avatar-1'),
+  },
+  {
+    id: '2',
+    name: 'Dr. Ben Adams',
+    specialty: 'Cardiologist',
+    clinic: 'Heartbeat Hospital',
+    distance: 5.1,
+    availability: 'soon',
+    avatarUrl: getAvatarUrl('doctor-avatar-2'),
+  },
+  {
+    id: '3',
+    name: 'Dr. Chloe Davis',
+    specialty: 'Dermatologist',
+    clinic: 'Skin & Care',
+    distance: 1.8,
+    availability: 'available',
+    avatarUrl: getAvatarUrl('doctor-avatar-3'),
+  },
+  {
+    id: '4',
+    name: 'Dr. Samuel Rodriguez',
+    specialty: 'Pediatrician',
+    clinic: 'KidsHealth Clinic',
+    distance: 7.3,
+    availability: 'unavailable',
+    avatarUrl: getAvatarUrl('doctor-avatar-4'),
+  },
+    {
+    id: '5',
+    name: 'Dr. Olivia Chen',
+    specialty: 'General Physician',
+    clinic: 'Greenwood Medical',
+    distance: 4.2,
+    availability: 'available',
+    avatarUrl: getAvatarUrl('doctor-avatar-5'),
+  },
+  {
+    id: '6',
+    name: 'Dr. Marcus Wright',
+    specialty: 'Orthopedist',
+    clinic: 'Bone & Joint Center',
+    distance: 8.9,
+    availability: 'soon',
+    avatarUrl: getAvatarUrl('doctor-avatar-6'),
+  },
+];
+
+export const appointments: Appointment[] = [
+  {
+    id: '1',
+    doctorName: 'Dr. Emily Carter',
+    specialty: 'General Physician',
+    clinic: 'City Central Clinic',
+    date: '2024-08-15',
+    time: '10:30 AM',
+    status: 'upcoming',
+    type: 'video',
+  },
+  {
+    id: '2',
+    doctorName: 'Dr. Chloe Davis',
+    specialty: 'Dermatologist',
+    clinic: 'Skin & Care',
+    date: '2024-08-16',
+    time: '02:00 PM',
+    status: 'upcoming',
+    type: 'chat',
+  },
+  {
+    id: '3',
+    doctorName: 'Dr. Ben Adams',
+    specialty: 'Cardiologist',
+    clinic: 'Heartbeat Hospital',
+    date: '2024-07-20',
+    time: '11:00 AM',
+    status: 'completed',
+    type: 'video',
+  },
+    {
+    id: '4',
+    doctorName: 'Dr. Samuel Rodriguez',
+    specialty: 'Pediatrician',
+    clinic: 'KidsHealth Clinic',
+    date: '2024-07-18',
+    time: '09:00 AM',
+    status: 'completed',
+    type: 'in-person',
+  },
+    {
+    id: '5',
+    doctorName: 'Dr. Emily Carter',
+    specialty: 'General Physician',
+    clinic: 'City Central Clinic',
+    date: '2024-07-10',
+    time: '04:30 PM',
+    status: 'cancelled',
+    type: 'video',
+  },
+];
+
+export const prescriptions: Prescription[] = [
+  {
+    id: '1',
+    doctorName: 'Dr. Ben Adams',
+    date: '2024-07-20',
+    medicines: [
+      { name: 'Aspirin', dosage: '81mg once daily', duration: '30 days' },
+      { name: 'Lisinopril', dosage: '10mg once daily', duration: '90 days' },
+    ],
+  },
+  {
+    id: '2',
+    doctorName: 'Dr. Samuel Rodriguez',
+    date: '2024-07-18',
+    medicines: [
+      { name: 'Amoxicillin', dosage: '250mg three times daily', duration: '7 days' },
+      { name: 'Ibuprofen', dosage: 'as needed for fever', duration: '7 days' },
+    ],
+  },
+];
