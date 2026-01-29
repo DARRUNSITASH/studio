@@ -1,11 +1,10 @@
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import type { Doctor } from "@/lib/types";
 import { MapPin, Clock } from "lucide-react";
 import { useTranslation } from "@/hooks/use-translation";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 type DoctorCardProps = {
   doctor: Doctor;
@@ -38,39 +37,38 @@ export function DoctorCard({ doctor }: DoctorCardProps) {
     }
   };
 
-  const nameParts = doctor.name.split(' ');
-  const initials = nameParts.length > 1 ? `${nameParts[0][0]}${nameParts[nameParts.length - 1][0]}` : nameParts[0].substring(0, 2);
-
   return (
-    <Card className="transition-all hover:shadow-lg hover:-translate-y-1 text-center">
-      <CardContent className="p-6 space-y-4">
-        <Avatar className="h-24 w-24 mx-auto mb-4 border-4 border-background">
-            <AvatarImage src={doctor.avatarUrl} alt={`Avatar of ${doctor.name}`} data-ai-hint="doctor avatar" />
-            <AvatarFallback>{initials}</AvatarFallback>
-        </Avatar>
-        
-        <div className="space-y-1">
-            <h3 className="text-lg font-bold font-headline">{doctor.name}</h3>
-            <p className="text-sm text-muted-foreground">{doctor.specialty}</p>
-        </div>
-        
-        <div className="text-sm space-y-2 text-muted-foreground pt-4">
-             <div className="flex items-center gap-2 justify-center">
+    <Card className="transition-all hover:shadow-lg overflow-hidden group">
+      <div className="relative w-full h-48">
+        <Image
+          src={doctor.avatarUrl}
+          alt={`Portrait of ${doctor.name}`}
+          fill
+          className="object-cover group-hover:scale-105 transition-transform duration-300"
+          data-ai-hint="doctor portrait"
+        />
+      </div>
+      <CardHeader>
+          <CardTitle>{doctor.name}</CardTitle>
+          <CardDescription>{doctor.specialty}</CardDescription>
+      </CardHeader>
+      <CardContent className="pt-0 space-y-4 text-sm">
+        <div className="space-y-2 text-muted-foreground">
+             <div className="flex items-center gap-2">
                 <MapPin className="h-4 w-4" />
                 <span>{doctor.clinic}</span>
              </div>
-             <div className="flex items-center gap-2 justify-center">
+             <div className="flex items-center gap-2">
                 <Clock className="h-4 w-4" />
                 <span>{t('km-away', { distance: doctor.distance })}</span>
              </div>
-             <div className="flex items-center gap-2 justify-center">
-                {getAvailabilityBadge(doctor.availability)}
-             </div>
         </div>
-
-        <Button className="w-full" variant="secondary">
-          {t('book-appointment')}
-        </Button>
+        <div className="flex items-center justify-between pt-2">
+            {getAvailabilityBadge(doctor.availability)}
+            <Button size="sm">
+              {t('book-appointment')}
+            </Button>
+        </div>
       </CardContent>
     </Card>
   );
