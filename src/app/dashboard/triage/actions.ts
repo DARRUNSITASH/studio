@@ -10,8 +10,11 @@ export async function getTriageSuggestion(symptoms: string): Promise<AISymptomTr
   try {
     const result = await aiSymptomTriage({ symptoms });
     return result;
-  } catch (e) {
+  } catch (e: any) {
     console.error(e);
+    if (e.message && (e.message.includes('API key') || e.message.includes('permissionDenied'))) {
+        return { error: 'There seems to be an issue with your Gemini API key. Please make sure it is set correctly in the .env file and has the correct permissions.' };
+    }
     return { error: 'Failed to get suggestion from AI. Please try again later.' };
   }
 }
