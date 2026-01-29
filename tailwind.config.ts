@@ -10,8 +10,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        body: ['"Noto Sans"', '"Noto Sans Devanagari"', '"Noto Sans Tamil"', 'sans-serif'],
-        headline: ['"Noto Sans"', '"Noto Sans Devanagari"', '"Noto Sans Tamil"', 'sans-serif'],
+        body: ['"PT Sans"', '"Noto Sans"', '"Noto Sans Devanagari"', '"Noto Sans Tamil"', 'sans-serif'],
+        headline: ['"PT Sans"', '"Noto Sans"', '"Noto Sans Devanagari"', '"Noto Sans Tamil"', 'sans-serif'],
         code: ['monospace'],
       },
       colors: {
