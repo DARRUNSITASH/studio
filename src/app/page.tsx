@@ -19,7 +19,7 @@ export default function LoginPage() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    router.push('/dashboard');
+    router.push('/language-selection');
   };
 
   const loginImage = PlaceHolderImages.find((img) => img.id === "login-image");

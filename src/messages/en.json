@@ -28,5 +28,7 @@
   "signup-desc": "Enter your information to create an account",
   "full-name": "Full name",
   "create-account": "Create an account",
-  "already-have-account": "Already have an account?"
+  "already-have-account": "Already have an account?",
+  "select-language": "Select Your Language",
+  "select-language-desc": "Please choose your preferred language to continue."
 }

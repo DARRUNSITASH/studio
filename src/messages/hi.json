@@ -28,5 +28,7 @@
   "signup-desc": "खाता बनाने के लिए अपनी जानकारी दर्ज करें",
   "full-name": "पूरा नाम",
   "create-account": "खाता बनाएं",
-  "already-have-account": "पहले से ही एक खाता है?"
+  "already-have-account": "पहले से ही एक खाता है?",
+  "select-language": "अपनी भाषा चुनें",
+  "select-language-desc": "जारी रखने के लिए कृपया अपनी पसंदीदा भाषा चुनें।"
 }
