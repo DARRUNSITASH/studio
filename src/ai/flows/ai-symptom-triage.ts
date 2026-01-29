@@ -48,14 +48,7 @@ const prompt = ai.definePrompt({
   Considerations:
   - Prioritize local healthcare providers.
   - Optimize for low-bandwidth environments.
-  - Support multilingual interactions.
-
-  Output in the following JSON format:
-  {
-    "urgency": "low | medium | emergency",
-    "suggestedSpecialist": "Suggested clinic or doctor",
-    "preConsultationSummary": "Brief summary of symptoms"
-  }`,
+  - Support multilingual interactions.`,
 });
 
 const aiSymptomTriageFlow = ai.defineFlow(
