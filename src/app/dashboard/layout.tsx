@@ -18,6 +18,7 @@ import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { LanguageSwitcher } from '@/components/language-switcher';
 import { useTranslation } from '@/hooks/use-translation';
+import { ThemeToggle } from '@/components/theme-toggle';
 
 
 export default function DashboardLayout({
@@ -38,6 +39,8 @@ export default function DashboardLayout({
 
   const getPageTitle = () => {
     const currentNav = navItems.find(item => pathname === item.href);
+    if (pathname === '/dashboard/profile') return t('profile');
+    if (pathname === '/dashboard/settings') return t('settings');
     return t(currentNav?.labelKey || 'dashboard');
   }
 
@@ -115,6 +118,7 @@ export default function DashboardLayout({
           <div className="w-full flex-1">
              <h1 className="font-semibold text-lg">{getPageTitle()}</h1>
           </div>
+          <ThemeToggle />
           <LanguageSwitcher />
           <UserNav />
         </header>
