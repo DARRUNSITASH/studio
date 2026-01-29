@@ -1,3 +1,4 @@
+'use client';
 import Link from 'next/link';
 import {
   ArrowRight,
@@ -15,59 +16,62 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-
-const featureCards = [
-  {
-    title: 'AI Symptom Checker',
-    description: 'Get a preliminary assessment of your symptoms and find the right care.',
-    icon: HeartPulse,
-    href: '/dashboard/triage',
-    cta: 'Check Symptoms',
-    color: 'text-red-500',
-    bgColor: 'bg-red-50',
-  },
-  {
-    title: 'Find a Doctor',
-    description: 'Search for doctors and clinics near you and book appointments.',
-    icon: Stethoscope,
-    href: '/dashboard/discover',
-    cta: 'Find Doctor',
-    color: 'text-blue-500',
-    bgColor: 'bg-blue-50',
-  },
-  {
-    title: 'My Appointments',
-    description: 'View your upcoming and past appointments with healthcare providers.',
-    icon: Users,
-    href: '/dashboard/appointments',
-    cta: 'View Appointments',
-    color: 'text-green-500',
-    bgColor: 'bg-green-50',
-  },
-  {
-    title: 'My Prescriptions',
-    description: 'Access your digital prescriptions and medication schedules.',
-    icon: FileText,
-    href: '/dashboard/prescriptions',
-    cta: 'View Prescriptions',
-    color: 'text-purple-500',
-    bgColor: 'bg-purple-50',
-  },
-];
+import { useTranslation } from '@/hooks/use-translation';
 
 export default function DashboardPage() {
+  const { t } = useTranslation();
+
+  const featureCards = [
+    {
+      title: t('ai-symptom-checker'),
+      description: t('ai-symptom-checker-desc'),
+      icon: HeartPulse,
+      href: '/dashboard/triage',
+      cta: t('check-symptoms'),
+      color: 'text-red-500',
+      bgColor: 'bg-red-50',
+    },
+    {
+      title: t('find-a-doctor'),
+      description: t('find-a-doctor-desc'),
+      icon: Stethoscope,
+      href: '/dashboard/discover',
+      cta: t('find-doctor'),
+      color: 'text-blue-500',
+      bgColor: 'bg-blue-50',
+    },
+    {
+      title: t('my-appointments'),
+      description: t('my-appointments-desc'),
+      icon: Users,
+      href: '/dashboard/appointments',
+      cta: t('view-appointments'),
+      color: 'text-green-500',
+      bgColor: 'bg-green-50',
+    },
+    {
+      title: t('my-prescriptions'),
+      description: t('my-prescriptions-desc'),
+      icon: FileText,
+      href: '/dashboard/prescriptions',
+      cta: t('view-prescriptions'),
+      color: 'text-purple-500',
+      bgColor: 'bg-purple-50',
+    },
+  ];
+
   return (
     <div className="flex-1 space-y-4">
       <Card className="bg-primary text-primary-foreground">
         <CardHeader className="pb-4">
-          <CardTitle>Welcome to MedCord!</CardTitle>
+          <CardTitle>{t('welcome-to-medcord')}</CardTitle>
           <CardDescription className="text-primary-foreground/80">
-            Need a quick consultation? Start a video call with an available doctor now.
+            {t('teleconsultation-prompt')}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <Button variant="secondary" className="bg-accent text-accent-foreground hover:bg-accent/90">
-            <Video className="mr-2 h-4 w-4" /> Start Teleconsultation
+            <Video className="mr-2 h-4 w-4" /> {t('start-teleconsultation')}
           </Button>
         </CardContent>
       </Card>

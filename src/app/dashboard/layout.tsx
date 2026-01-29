@@ -11,19 +11,14 @@ import {
 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { UserNav } from '@/components/user-nav';
 import { Logo } from '@/components/icons';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
+import { LanguageSwitcher } from '@/components/language-switcher';
+import { useTranslation } from '@/hooks/use-translation';
+
 
 export default function DashboardLayout({
   children,
@@ -31,18 +26,19 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const { t } = useTranslation();
 
   const navItems = [
-    { href: '/dashboard', icon: Home, label: 'Dashboard' },
-    { href: '/dashboard/triage', icon: HeartPulse, label: 'Symptom Checker' },
-    { href: '/dashboard/discover', icon: Stethoscope, label: 'Find a Doctor' },
-    { href: '/dashboard/appointments', icon: Users, label: 'Appointments' },
-    { href: '/dashboard/prescriptions', icon: FileText, label: 'Prescriptions' },
+    { href: '/dashboard', icon: Home, labelKey: 'dashboard' },
+    { href: '/dashboard/triage', icon: HeartPulse, labelKey: 'symptom-checker' },
+    { href: '/dashboard/discover', icon: Stethoscope, labelKey: 'find-a-doctor' },
+    { href: '/dashboard/appointments', icon: Users, labelKey: 'appointments' },
+    { href: '/dashboard/prescriptions', icon: FileText, labelKey: 'prescriptions' },
   ];
 
   const getPageTitle = () => {
     const currentNav = navItems.find(item => pathname === item.href);
-    return currentNav ? currentNav.label : 'Dashboard';
+    return t(currentNav?.labelKey || 'dashboard');
   }
 
   return (
@@ -71,7 +67,7 @@ export default function DashboardLayout({
                   )}
                 >
                   <item.icon className="h-4 w-4" />
-                  {item.label}
+                  {t(item.labelKey)}
                 </Link>
               ))}
             </nav>
@@ -110,7 +106,7 @@ export default function DashboardLayout({
                     )}
                   >
                     <item.icon className="h-5 w-5" />
-                    {item.label}
+                    {t(item.labelKey)}
                   </Link>
                 ))}
               </nav>
@@ -119,6 +115,7 @@ export default function DashboardLayout({
           <div className="w-full flex-1">
              <h1 className="font-semibold text-lg">{getPageTitle()}</h1>
           </div>
+          <LanguageSwitcher />
           <UserNav />
         </header>
         <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6 bg-background">

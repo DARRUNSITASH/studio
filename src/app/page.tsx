@@ -10,9 +10,12 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Logo } from '@/components/icons';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { LanguageSwitcher } from '@/components/language-switcher';
+import { useTranslation } from '@/hooks/use-translation';
 
 export default function LoginPage() {
   const router = useRouter();
+  const { t } = useTranslation();
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,6 +26,9 @@ export default function LoginPage() {
 
   return (
     <div className="w-full lg:grid lg:min-h-screen lg:grid-cols-2 xl:min-h-screen">
+       <div className="absolute top-4 right-4">
+        <LanguageSwitcher />
+      </div>
       <div className="flex items-center justify-center py-12">
         <div className="mx-auto grid w-[350px] gap-6">
           <div className="grid gap-2 text-center">
@@ -32,15 +38,15 @@ export default function LoginPage() {
             </div>
             <Card>
               <CardHeader>
-                <CardTitle className="text-2xl">Login</CardTitle>
+                <CardTitle className="text-2xl">{t('login')}</CardTitle>
                 <CardDescription>
-                  Enter your email below to login to your account
+                  {t('login-desc')}
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleLogin} className="grid gap-4">
                   <div className="grid gap-2">
-                    <Label htmlFor="email">Email</Label>
+                    <Label htmlFor="email">{t('email')}</Label>
                     <Input
                       id="email"
                       type="email"
@@ -50,24 +56,24 @@ export default function LoginPage() {
                   </div>
                   <div className="grid gap-2">
                     <div className="flex items-center">
-                      <Label htmlFor="password">Password</Label>
+                      <Label htmlFor="password">{t('password')}</Label>
                       <Link
                         href="#"
                         className="ml-auto inline-block text-sm underline"
                       >
-                        Forgot your password?
+                        {t('forgot-password')}
                       </Link>
                     </div>
                     <Input id="password" type="password" required />
                   </div>
                   <Button type="submit" className="w-full bg-primary hover:bg-primary/90">
-                    Login
+                    {t('login')}
                   </Button>
                 </form>
                 <div className="mt-4 text-center text-sm">
-                  Don&apos;t have an account?{' '}
+                  {t('dont-have-account')}{' '}
                   <Link href="/signup" className="underline">
-                    Sign up
+                    {t('signup')}
                   </Link>
                 </div>
               </CardContent>
