@@ -47,12 +47,7 @@ export const AppContext = createContext<AppContextType>({
 });
 
 export function AppProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>({
-    id: 'u1',
-    name: 'Dr. Rajesh Kannan',
-    email: 'rajesh@medcord.tn',
-    role: 'doctor',
-  });
+  const [user, setUser] = useState<User | null>(null);
   const [doctors, setDoctors] = useState<Doctor[]>(initialDoctors);
   const [appointments, setAppointments] = useState<Appointment[]>(initialAppointments);
   const [prescriptions, setPrescriptions] = useState<Prescription[]>(initialPrescriptions);
@@ -63,6 +58,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
     pendingCount: 0,
     error: null,
   });
+
+  // Auth check removed - no authentication required
+  // Users are set directly from login page
 
   // Load from LocalStorage on mount
   useEffect(() => {
@@ -160,28 +158,80 @@ export function AppProvider({ children }: { children: ReactNode }) {
   // Fetch initial data from Supabase
   useEffect(() => {
     const fetchData = async () => {
-      // Fetch Doctors
-      const { data: dbDoctors } = await supabase.from('doctors').select('*, profiles(name)');
-      if (dbDoctors) {
-        setDoctors(dbDoctors.map((d: any) => ({
-          ...d,
-          name: d.profiles?.name || 'Dr. Unknown'
-        })));
+      if (!supabase) return;
+
+      try {
+        // Fetch Doctors
+        const { data: dbDoctors, error: doctorsError } = await supabase
+          .from('doctors')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (doctorsError) {
+          console.error('Error fetching doctors:', doctorsError);
+        } else if (dbDoctors && dbDoctors.length > 0) {
+          setDoctors(dbDoctors.map((d: any) => ({
+            id: d.id,
+            name: d.name,
+            specialty: d.specialty,
+            experience: d.experience,
+            rating: d.rating,
+            patientsCount: d.patients_count,
+            image: d.image,
+            available: d.available,
+          })));
+        }
+
+        // Fetch Appointments for current user
+        if (user) {
+          const { data: dbAppointments, error: appointmentsError } = await supabase
+            .from('appointments')
+            .select('*')
+            .or(`patient_id.eq.${user.id},doctor_id.eq.${user.id}`)
+            .order('created_at', { ascending: false });
+
+          if (appointmentsError) {
+            console.error('Error fetching appointments:', appointmentsError);
+          } else if (dbAppointments && dbAppointments.length > 0) {
+            setAppointments(dbAppointments.map((a: any) => ({
+              id: a.id,
+              patientId: a.patient_id,
+              patientName: a.patient_name,
+              doctorId: a.doctor_id,
+              doctorName: a.doctor_name,
+              date: a.date,
+              time: a.time,
+              status: a.status,
+              type: a.type,
+            })));
+          }
+
+          // Fetch Prescriptions for current user
+          const { data: dbPrescriptions, error: prescriptionsError } = await supabase
+            .from('prescriptions')
+            .select('*')
+            .or(`patient_id.eq.${user.id},doctor_id.eq.${user.id}`)
+            .order('created_at', { ascending: false });
+
+          if (prescriptionsError) {
+            console.error('Error fetching prescriptions:', prescriptionsError);
+          } else if (dbPrescriptions && dbPrescriptions.length > 0) {
+            setPrescriptions(dbPrescriptions.map((p: any) => ({
+              id: p.id,
+              patientId: p.patient_id,
+              doctorId: p.doctor_id,
+              date: p.date,
+              medicines: p.medicines,
+            })));
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching data from Supabase:', error);
       }
-
-      // Fetch Appointments
-      const { data: dbAppointments } = await supabase.from('appointments').select('*');
-      if (dbAppointments) setAppointments(dbAppointments);
-
-      // Fetch Prescriptions
-      const { data: dbPrescriptions } = await supabase.from('prescriptions').select('*');
-      if (dbPrescriptions) setPrescriptions(dbPrescriptions);
     };
 
-    if (supabase) {
-      fetchData();
-    }
-  }, []);
+    fetchData();
+  }, [user?.id]);
 
   const addAppointment = async (appointment: Appointment) => {
     setAppointments(prev => {
@@ -192,7 +242,20 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
     // Persist to Supabase if configured
     if (supabase) {
-      await supabase.from('appointments').insert([appointment]);
+      const { error } = await supabase.from('appointments').insert([{
+        patient_id: appointment.patientId,
+        patient_name: appointment.patientName,
+        doctor_id: appointment.doctorId,
+        doctor_name: appointment.doctorName,
+        date: appointment.date,
+        time: appointment.time,
+        status: appointment.status,
+        type: appointment.type,
+      }]);
+
+      if (error) {
+        console.error('Error creating appointment:', error);
+      }
     }
   };
 
@@ -204,12 +267,16 @@ export function AppProvider({ children }: { children: ReactNode }) {
     });
 
     if (supabase) {
-      await supabase.from('prescriptions').insert([{
+      const { error } = await supabase.from('prescriptions').insert([{
         patient_id: prescription.patientId,
         doctor_id: prescription.doctorId,
         date: prescription.date,
         medicines: prescription.medicines
       }]);
+
+      if (error) {
+        console.error('Error creating prescription:', error);
+      }
     }
   };
 

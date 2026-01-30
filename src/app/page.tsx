@@ -20,16 +20,33 @@ export default function UnifiedLoginPage() {
   const { t, locale, setLocale } = useTranslation();
   const { setUser } = useContext(AppContext);
   const [role, setRole] = useState<UserRole>('patient');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setUser({
-      id: Math.random().toString(36).substr(2, 9),
-      name: role === 'patient' ? 'John Patient' : role === 'doctor' ? 'Dr. Smith' : 'Admin User',
-      email: `${role}@medcord.com`,
-      role: role,
-    });
-    router.push('/dashboard');
+    setLoading(true);
+    setError(null);
+
+    try {
+      // NO AUTHENTICATION - Just login with any email
+      setUser({
+        id: Math.random().toString(36).substr(2, 9),
+        name: email.split('@')[0] || 'User',
+        email: email,
+        role: role,
+      });
+
+      // Redirect to dashboard immediately
+      router.push('/dashboard');
+    } catch (err: any) {
+      console.error('Login error:', err);
+      setError('Something went wrong. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const languages = [
@@ -116,21 +133,36 @@ export default function UnifiedLoginPage() {
             </div>
 
             <div className="space-y-4">
+              {error && (
+                <div className="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md">
+                  {error}
+                </div>
+              )}
               <div className="grid gap-2">
                 <Label htmlFor="email">{t('email') || 'Email'}</Label>
                 <Input
                   id="email"
                   type="email"
                   placeholder="name@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
+                  disabled={loading}
                 />
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="password">{t('password') || 'Password'}</Label>
-                <Input id="password" type="password" required />
+                <Input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  disabled={loading}
+                />
               </div>
-              <Button type="submit" className="w-full">
-                {t('login') || 'Login'}
+              <Button type="submit" className="w-full" disabled={loading}>
+                {loading ? 'Logging in...' : (t('login') || 'Login')}
               </Button>
             </div>
           </form>

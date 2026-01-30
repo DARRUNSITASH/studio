@@ -12,11 +12,17 @@ export type Doctor = {
   id: string;
   name: string;
   specialty: string;
-  clinic: string;
-  distance: number;
-  availability: 'available' | 'soon' | 'unavailable';
-  avatarUrl: string;
-  role: 'doctor';
+  clinic?: string;
+  distance?: number;
+  availability?: 'available' | 'soon' | 'unavailable';
+  avatarUrl?: string;
+  role?: 'doctor';
+  // Database fields
+  experience?: number;
+  rating?: number;
+  patientsCount?: number;
+  image?: string;
+  available?: boolean;
 };
 
 export type Appointment = {
@@ -32,6 +38,7 @@ export type Appointment = {
   status: 'upcoming' | 'completed' | 'cancelled';
   type: 'video' | 'chat' | 'in-person';
   meetLink?: string;
+  notes?: string;
 };
 
 export type Prescription = {
@@ -46,6 +53,7 @@ export type Prescription = {
     dosage: string;
     duration: string;
   }[];
+  notes?: string;
 };
 
 export type CaseMessage = {
@@ -54,6 +62,7 @@ export type CaseMessage = {
   senderName: string;
   content: string;
   timestamp: string;
+  syncStatus?: 'pending' | 'synced' | 'failed';
 };
 
 export type CareCase = {

@@ -24,11 +24,28 @@ import { UserRole } from '@/lib/types';
 export function UserNav() {
   const { t } = useTranslation();
   const router = useRouter();
-  const { user, switchRole } = useContext(AppContext);
+  const { user, switchRole, setUser } = useContext(AppContext);
   const userAvatar = PlaceHolderImages.find((img) => img.id === 'user-avatar-1');
 
-  const handleLogout = () => {
-    router.push('/');
+  const handleLogout = async () => {
+    try {
+      // Import signOut function
+      const { signOut } = await import('@/lib/auth');
+
+      // Sign out from Supabase
+      await signOut();
+
+      // Clear user from context
+      setUser(null);
+
+      // Redirect to login page
+      router.push('/');
+    } catch (error) {
+      console.error('Logout error:', error);
+      // Still redirect even if there's an error
+      setUser(null);
+      router.push('/');
+    }
   };
 
   const handleRoleSwitch = (role: UserRole) => {

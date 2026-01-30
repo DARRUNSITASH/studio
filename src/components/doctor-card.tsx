@@ -63,11 +63,11 @@ export function DoctorCard({ doctor, onBook }: DoctorCardProps) {
         <div className="space-y-2 text-muted-foreground">
           <div className="flex items-center gap-2">
             <MapPin className="h-4 w-4" />
-            <span>{doctor.clinic}</span>
+            <span>{doctor.clinic || 'Clinic'}</span>
           </div>
           <div className="flex items-center gap-2">
             <Clock className="h-4 w-4" />
-            <span>{t('km-away', { distance: doctor.distance })}</span>
+            <span>{t('km-away', { distance: doctor.distance || 0 })}</span>
           </div>
         </div>
 
@@ -90,7 +90,7 @@ export function DoctorCard({ doctor, onBook }: DoctorCardProps) {
         </div>
 
         <div className="flex items-center justify-between pt-2">
-          {getAvailabilityBadge(doctor.availability)}
+          {getAvailabilityBadge(doctor.availability || 'available')}
           <Button size="sm" onClick={() => onBook(doctor, selectedTime)} disabled={doctor.availability === 'unavailable'}>
             {t('book-appointment')}
           </Button>
