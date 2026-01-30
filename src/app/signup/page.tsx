@@ -12,14 +12,14 @@ export default function SignupPage() {
   const { t } = useTranslation();
   return (
     <div className="flex items-center justify-center min-h-screen bg-background relative">
-        <div className="absolute top-4 right-4">
-             <LanguageSwitcher />
-        </div>
+      <div className="absolute top-4 right-4">
+        <LanguageSwitcher />
+      </div>
       <Card className="mx-auto max-w-sm">
         <CardHeader>
           <div className="flex items-center justify-center gap-2 mb-4">
             <Logo className="h-8 w-8 text-primary" />
-            <h1 className="text-3xl font-bold font-headline">MedCord</h1>
+            <h1 className="text-3xl font-bold font-headline">Medcord</h1>
           </div>
           <CardTitle className="text-2xl">{t('signup')}</CardTitle>
           <CardDescription>

@@ -11,7 +11,9 @@ type Translations = { [key: string]: string };
 
 type I18nContextType = {
   locale: Locale;
+  enabledLocales: Locale[];
   setLocale: (locale: Locale) => void;
+  toggleLocale: (locale: Locale) => void;
   t: (key: string, replacements?: { [key: string]: string | number }) => string;
 };
 
@@ -25,6 +27,21 @@ const messages: Record<Locale, Translations> = {
 
 export function I18nProvider({ children }: { children: ReactNode }) {
   const [locale, setLocale] = useState<Locale>('en');
+  const [enabledLocales, setEnabledLocales] = useState<Locale[]>(['en', 'hi', 'ta']);
+
+  const toggleLocale = (target: Locale) => {
+    if (target === 'en') return; // English is mandatory
+
+    setEnabledLocales(prev => {
+      if (prev.includes(target)) {
+        const next = prev.filter(l => l !== target);
+        if (locale === target) setLocale('en'); // Switch to fallback if current is disabled
+        return next;
+      } else {
+        return [...prev, target];
+      }
+    });
+  };
 
   const t = useMemo(
     () => (key: string, replacements?: { [key: string]: string | number }) => {
@@ -43,10 +60,12 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   const value = useMemo(
     () => ({
       locale,
+      enabledLocales,
       setLocale,
+      toggleLocale,
       t,
     }),
-    [locale, t]
+    [locale, enabledLocales, t]
   );
 
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;

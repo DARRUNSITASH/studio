@@ -1,5 +1,6 @@
 'use client';
 import Link from 'next/link';
+import { useContext } from 'react';
 import {
   Bell,
   Home,
@@ -8,6 +9,17 @@ import {
   Stethoscope,
   FileText,
   PanelLeft,
+  Calendar,
+  ClipboardList,
+  Activity,
+  UserCog,
+  Settings,
+  ShieldCheck,
+  Globe,
+  BarChart3,
+  Video,
+  Clock,
+  LayoutDashboard,
 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
@@ -19,6 +31,8 @@ import { cn } from '@/lib/utils';
 import { LanguageSwitcher } from '@/components/language-switcher';
 import { useTranslation } from '@/hooks/use-translation';
 import { ThemeToggle } from '@/components/theme-toggle';
+import { AppContext } from '@/context/AppContext';
+import { UserRole } from '@/lib/types';
 
 
 export default function DashboardLayout({
@@ -28,14 +42,44 @@ export default function DashboardLayout({
 }) {
   const pathname = usePathname();
   const { t } = useTranslation();
+  const { user } = useContext(AppContext);
+  const userRole: UserRole = user?.role || 'patient';
 
-  const navItems = [
-    { href: '/dashboard', icon: Home, labelKey: 'dashboard' },
-    { href: '/dashboard/triage', icon: HeartPulse, labelKey: 'symptom-checker' },
-    { href: '/dashboard/discover', icon: Stethoscope, labelKey: 'find-a-doctor' },
-    { href: '/dashboard/appointments', icon: Users, labelKey: 'appointments' },
-    { href: '/dashboard/prescriptions', icon: FileText, labelKey: 'prescriptions' },
-  ];
+  const getNavItems = (role: UserRole) => {
+    switch (role) {
+      case 'doctor':
+        return [
+          { href: '/dashboard', icon: Home, labelKey: 'home' },
+          { href: '/dashboard/cases', icon: Clock, labelKey: 'offline-messages' },
+          { href: '/dashboard/live', icon: Video, labelKey: 'live-consultation' },
+          { href: '/dashboard/appointments', icon: Calendar, labelKey: 'appointments-queue' },
+          { href: '/dashboard/records', icon: ClipboardList, labelKey: 'patient-records' },
+          { href: '/dashboard/prescriptions', icon: FileText, labelKey: 'prescriptions' },
+        ];
+      case 'admin':
+        return [
+          { href: '/dashboard', icon: LayoutDashboard, labelKey: 'dashboard-overview' },
+          { href: '/dashboard/users', icon: Users, labelKey: 'user-management' },
+          { href: '/dashboard/clinics', icon: Stethoscope, labelKey: 'clinic-resource-management' },
+          { href: '/dashboard/monitoring', icon: Activity, labelKey: 'consultation-monitoring' },
+          { href: '/dashboard/languages', icon: Globe, labelKey: 'language-management' },
+          { href: '/dashboard/settings', icon: Settings, labelKey: 'system-settings' },
+          { href: '/dashboard/reports', icon: BarChart3, labelKey: 'reports-logs' },
+        ];
+      case 'patient':
+      default:
+        return [
+          { href: '/dashboard', icon: Home, labelKey: 'home' },
+          { href: '/dashboard/triage', icon: HeartPulse, labelKey: 'symptom-checker' },
+          { href: '/dashboard/cases', icon: Clock, labelKey: 'offline-messages' },
+          { href: '/dashboard/discover', icon: Stethoscope, labelKey: 'find-a-doctor' },
+          { href: '/dashboard/appointments', icon: Users, labelKey: 'appointments' },
+          { href: '/dashboard/prescriptions', icon: FileText, labelKey: 'prescriptions' },
+        ];
+    }
+  };
+
+  const navItems = getNavItems(userRole);
 
   const getPageTitle = () => {
     const currentNav = navItems.find(item => pathname === item.href);
@@ -51,7 +95,7 @@ export default function DashboardLayout({
           <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
             <Link href="/" className="flex items-center gap-2 font-semibold">
               <Logo className="h-6 w-6 text-primary" />
-              <span className="font-headline text-lg">MedCord</span>
+              <span className="font-headline text-lg">Medcord</span>
             </Link>
             <Button variant="outline" size="icon" className="ml-auto h-8 w-8">
               <Bell className="h-4 w-4" />
@@ -97,7 +141,7 @@ export default function DashboardLayout({
                   className="flex items-center gap-2 text-lg font-semibold mb-4"
                 >
                   <Logo className="h-6 w-6 text-primary" />
-                   <span className="font-headline text-xl">MedCord</span>
+                  <span className="font-headline text-xl">Medcord</span>
                 </Link>
                 {navItems.map((item) => (
                   <Link
@@ -116,7 +160,7 @@ export default function DashboardLayout({
             </SheetContent>
           </Sheet>
           <div className="w-full flex-1">
-             <h1 className="font-semibold text-lg">{getPageTitle()}</h1>
+            <h1 className="font-semibold text-lg">{getPageTitle()}</h1>
           </div>
           <ThemeToggle />
           <LanguageSwitcher />

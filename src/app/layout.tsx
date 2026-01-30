@@ -4,8 +4,21 @@ import { Toaster } from '@/components/ui/toaster';
 import { Providers } from './providers';
 
 export const metadata: Metadata = {
-  title: 'MedCord',
-  description: 'A hyperlocal telemedicine and healthcare coordination platform.',
+  title: 'MedCord Tamil Nadu',
+  description: 'Healthcare consultation platform for Tamil Nadu with offline messaging',
+  manifest: '/manifest.json',
+  themeColor: '#3b82f6',
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 5,
+    userScalable: true,
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'MedCord TN',
+  },
 };
 
 export default function RootLayout({

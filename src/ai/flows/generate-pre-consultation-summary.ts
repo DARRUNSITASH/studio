@@ -7,8 +7,8 @@
  * - GeneratePreConsultationSummaryOutput - The return type for the generatePreConsultationSummary function.
  */
 
-import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
+import { ai } from '@/ai/genkit';
+import { z } from 'genkit';
 
 const GeneratePreConsultationSummaryInputSchema = z.object({
   symptoms: z.string().describe('The patient provided symptoms.'),
@@ -27,9 +27,10 @@ export async function generatePreConsultationSummary(input: GeneratePreConsultat
 
 const prompt = ai.definePrompt({
   name: 'generatePreConsultationSummaryPrompt',
-  input: {schema: GeneratePreConsultationSummaryInputSchema},
-  output: {schema: GeneratePreConsultationSummaryOutputSchema},
+  input: { schema: GeneratePreConsultationSummaryInputSchema },
+  output: { schema: GeneratePreConsultationSummaryOutputSchema },
   prompt: `You are an AI assistant helping doctors to quickly understand patient concerns.
+  Your task is to generate a concise pre-consultation summary in RAW JSON format.
 
   Generate a concise pre-consultation summary based on the following patient information:
 
@@ -37,7 +38,16 @@ const prompt = ai.definePrompt({
 
   Medical History (if available): {{{patientHistory}}}
 
-  Summary: `,
+  CRITICAL: You must return ONLY a JSON object. 
+  The value for "summary" must be a string.
+
+  EXAMPLE OF VALID OUTPUT:
+  {
+    "summary": "The patient has a headache and fever for 2 days..."
+  }
+
+  DO NOT include any markdown, backticks, or explanatory text.
+  DO NOT repeat the schema definition in the output.`,
 });
 
 const generatePreConsultationSummaryFlow = ai.defineFlow(
@@ -47,7 +57,7 @@ const generatePreConsultationSummaryFlow = ai.defineFlow(
     outputSchema: GeneratePreConsultationSummaryOutputSchema,
   },
   async input => {
-    const {output} = await prompt(input);
+    const { output } = await prompt(input);
     return output!;
   }
 );

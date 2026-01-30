@@ -1,5 +1,6 @@
 'use client';
 
+import { useContext } from 'react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -9,9 +10,18 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useTranslation } from '@/hooks/use-translation';
 import { Globe } from 'lucide-react';
+import { I18nContext } from '@/context/I18nProvider';
 
 export function LanguageSwitcher() {
-  const { setLocale } = useTranslation();
+  const context = useContext(I18nContext);
+  if (!context) return null;
+  const { setLocale, enabledLocales } = context;
+
+  const languages = [
+    { code: 'en', name: 'English' },
+    { code: 'hi', name: 'Hindi' },
+    { code: 'ta', name: 'Tamil' },
+  ] as const;
 
   return (
     <DropdownMenu>
@@ -22,15 +32,11 @@ export function LanguageSwitcher() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setLocale('en')}>
-          English
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setLocale('hi')}>
-          Hindi
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setLocale('ta')}>
-          Tamil
-        </DropdownMenuItem>
+        {languages.filter(l => enabledLocales.includes(l.code)).map(lang => (
+          <DropdownMenuItem key={lang.code} onClick={() => setLocale(lang.code)}>
+            {lang.name}
+          </DropdownMenuItem>
+        ))}
       </DropdownMenuContent>
     </DropdownMenu>
   );

@@ -45,6 +45,9 @@ const AppointmentCard = ({
   onViewDetailsClick: () => void;
 }) => {
   const { t } = useTranslation();
+  const { user } = useContext(AppContext);
+  const isDoctor = user?.role === 'doctor';
+
   const getStatusBadge = (status: Appointment['status']) => {
     const statusKey = `status-${status}`;
     switch (status) {
@@ -77,25 +80,25 @@ const AppointmentCard = ({
     <Card>
       <CardHeader>
         <div className="flex justify-between items-start">
-            <div>
-                <CardTitle>{appointment.doctorName}</CardTitle>
-                <CardDescription>{appointment.specialty}</CardDescription>
-            </div>
-            {getStatusBadge(appointment.status)}
+          <div>
+            <CardTitle>{isDoctor ? (appointment.patientName || 'Patient') : appointment.doctorName}</CardTitle>
+            <CardDescription>{isDoctor ? t('for-patient', { name: appointment.patientName || 'Patient' }) : appointment.specialty}</CardDescription>
+          </div>
+          {getStatusBadge(appointment.status)}
         </div>
       </CardHeader>
       <CardContent className="space-y-2 text-sm text-muted-foreground">
         <div className="flex items-center gap-2">
-            <Calendar className="h-4 w-4" />
-            <span>{format(new Date(appointment.date), 'MMMM dd, yyyy')}</span>
+          <Calendar className="h-4 w-4" />
+          <span>{format(new Date(appointment.date), 'MMMM dd, yyyy')}</span>
         </div>
         <div className="flex items-center gap-2">
-            <Clock className="h-4 w-4" />
-            <span>{appointment.time}</span>
+          <Clock className="h-4 w-4" />
+          <span>{appointment.time}</span>
         </div>
         <div className="flex items-center gap-2 capitalize">
-            {getConsultationIcon(appointment.type)}
-            <span>{getConsultationType(appointment.type)}</span>
+          {getConsultationIcon(appointment.type)}
+          <span>{getConsultationType(appointment.type)}</span>
         </div>
       </CardContent>
       {appointment.status === 'upcoming' && (
@@ -107,16 +110,16 @@ const AppointmentCard = ({
               </Link>
             </Button>
           ) : (
-             <Button className="w-full" disabled>
-                <Check className="mr-2 h-4 w-4" /> {t('join-call')}
-              </Button>
+            <Button className="w-full" disabled>
+              <Check className="mr-2 h-4 w-4" /> {t('join-call')}
+            </Button>
           )}
           <Button variant="outline" className="w-full" onClick={onCancelClick}>
             <X className="mr-2 h-4 w-4" /> {t('cancel-appointment')}
           </Button>
         </CardFooter>
       )}
-       {appointment.status === 'completed' && (
+      {appointment.status === 'completed' && (
         <CardFooter>
           <Button variant="secondary" className="w-full" onClick={onViewDetailsClick}>{t('view-details')}</Button>
         </CardFooter>
@@ -141,11 +144,11 @@ export default function AppointmentsPage() {
     setSelectedAppointment(appointmentToCancel);
     setIsCancelDialogOpen(true);
   };
-  
+
   const handleConfirmCancel = () => {
     if (!selectedAppointment) return;
-    setAppointments(currentAppointments => 
-      currentAppointments.map(app => 
+    setAppointments(currentAppointments =>
+      currentAppointments.map(app =>
         app.id === selectedAppointment.id ? { ...app, status: 'cancelled' } : app
       )
     );
@@ -164,8 +167,8 @@ export default function AppointmentsPage() {
   const pastAppointments = appointments.filter(
     (a) => a.status === 'completed' || a.status === 'cancelled'
   );
-  
-    const getConsultationType = (type: Appointment['type']) => {
+
+  const getConsultationType = (type: Appointment['type']) => {
     const typeKey = `${type}-consultation`;
     return t(typeKey);
   }
@@ -182,11 +185,11 @@ export default function AppointmentsPage() {
           {upcomingAppointments.length > 0 ? (
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
               {upcomingAppointments.map((app) => (
-                <AppointmentCard 
-                  key={app.id} 
-                  appointment={app} 
+                <AppointmentCard
+                  key={app.id}
+                  appointment={app}
                   onCancelClick={() => handleCancel(app)}
-                  onViewDetailsClick={() => {}}
+                  onViewDetailsClick={() => { }}
                 />
               ))}
             </div>
@@ -195,19 +198,19 @@ export default function AppointmentsPage() {
           )}
         </TabsContent>
         <TabsContent value="past">
-        {pastAppointments.length > 0 ? (
+          {pastAppointments.length > 0 ? (
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
               {pastAppointments.map((app) => (
-                <AppointmentCard 
-                  key={app.id} 
-                  appointment={app} 
-                  onCancelClick={() => {}}
+                <AppointmentCard
+                  key={app.id}
+                  appointment={app}
+                  onCancelClick={() => { }}
                   onViewDetailsClick={() => handleViewDetails(app)}
                 />
               ))}
             </div>
           ) : (
-              <p className="text-muted-foreground">{t('no-past-appointments')}</p>
+            <p className="text-muted-foreground">{t('no-past-appointments')}</p>
           )}
         </TabsContent>
       </Tabs>

@@ -1,5 +1,6 @@
 'use client';
-import { useState, useMemo, useContext } from 'react';
+import { useState, useMemo, useContext, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -18,24 +19,24 @@ import { add, format } from 'date-fns';
 
 export default function DiscoverPage() {
   const { t } = useTranslation();
-  const { doctors, addAppointment } = useContext(AppContext);
+  const { user, doctors, addAppointment } = useContext(AppContext);
   const { toast } = useToast();
 
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedSpecialty, setSelectedSpecialty] = useState('all');
   const [selectedDistance, setSelectedDistance] = useState('any');
 
-  const specialties = useMemo(() => 
+  const specialties = useMemo(() =>
     ['all', ...new Set(doctors.map((doctor) => doctor.specialty))]
-  , [doctors]);
+    , [doctors]);
 
   const filteredDoctors = useMemo(() => {
     return doctors.filter(doctor => {
       // Search filter
-      const matchesSearch = searchTerm.trim() === '' || 
+      const matchesSearch = searchTerm.trim() === '' ||
         doctor.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         doctor.clinic.toLowerCase().includes(searchTerm.toLowerCase());
-      
+
       // Specialty filter
       const matchesSpecialty = selectedSpecialty === 'all' || doctor.specialty === selectedSpecialty;
 
@@ -46,24 +47,34 @@ export default function DiscoverPage() {
     });
   }, [doctors, searchTerm, selectedSpecialty, selectedDistance]);
 
-  const handleBookAppointment = (doctor: Doctor) => {
+  const router = useRouter();
+
+  const handleBookAppointment = (doctor: Doctor, selectedTime: string) => {
     const newAppointmentDate = add(new Date(), { days: 1 });
     const newAppointment = {
-        id: Math.random().toString(36).substr(2, 9),
-        doctorName: doctor.name,
-        specialty: doctor.specialty,
-        clinic: doctor.clinic,
-        date: format(newAppointmentDate, 'yyyy-MM-dd'),
-        time: '11:00 AM',
-        status: 'upcoming' as const,
-        type: 'video' as const,
-        meetLink: 'https://meet.google.com/new',
+      id: Math.random().toString(36).substr(2, 9),
+      patientId: user?.id,
+      patientName: user?.name,
+      doctorId: doctor.id,
+      doctorName: doctor.name,
+      specialty: doctor.specialty,
+      clinic: doctor.clinic,
+      date: format(newAppointmentDate, 'yyyy-MM-dd'),
+      time: selectedTime,
+      status: 'upcoming' as const,
+      type: 'video' as const,
+      meetLink: 'https://meet.google.com/new',
     };
     addAppointment(newAppointment);
     toast({
-        title: "Appointment Booked!",
-        description: `Your appointment with ${doctor.name} has been scheduled for tomorrow at 11:00 AM.`,
+      title: "Appointment Booked!",
+      description: `Your appointment with ${doctor.name} has been scheduled for tomorrow at ${selectedTime}.`,
     });
+
+    // Redirect to appointments page after a short delay so they see their new appointment
+    setTimeout(() => {
+      router.push('/dashboard/appointments');
+    }, 1500);
   };
 
   return (
@@ -71,9 +82,9 @@ export default function DiscoverPage() {
       <div className="flex flex-col gap-4 md:flex-row">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-          <Input 
-            placeholder={t('search-doctor-clinic')} 
-            className="pl-10" 
+          <Input
+            placeholder={t('search-doctor-clinic')}
+            className="pl-10"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />

@@ -1,0 +1,58 @@
+{
+    "name": "MedCord Tamil Nadu",
+    "short_name": "MedCord TN",
+    "description": "Healthcare consultation platform for Tamil Nadu with offline messaging",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#3b82f6",
+    "orientation": "portrait-primary",
+    "scope": "/",
+    "icons": [
+        {
+            "src": "/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ],
+    "categories": [
+        "health",
+        "medical",
+        "productivity"
+    ],
+    "lang": "en-IN",
+    "dir": "ltr",
+    "shortcuts": [
+        {
+            "name": "Offline Messages",
+            "short_name": "Messages",
+            "description": "View and send offline messages",
+            "url": "/dashboard/cases",
+            "icons": [
+                {
+                    "src": "/icon-192.png",
+                    "sizes": "192x192"
+                }
+            ]
+        },
+        {
+            "name": "Symptom Checker",
+            "short_name": "Symptoms",
+            "description": "Check your symptoms with AI",
+            "url": "/dashboard/triage",
+            "icons": [
+                {
+                    "src": "/icon-192.png",
+                    "sizes": "192x192"
+                }
+            ]
+        }
+    ]
+}

@@ -19,10 +19,10 @@ export default function LanguageSelectionPage() {
     <div className="flex items-center justify-center min-h-screen bg-background">
       <Card className="w-full max-w-md mx-4">
         <CardHeader className="text-center">
-            <div className="flex items-center justify-center gap-2 mb-4">
-                <Logo className="h-8 w-8 text-primary" />
-                <h1 className="text-3xl font-bold font-headline">MedCord</h1>
-            </div>
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <Logo className="h-8 w-8 text-primary" />
+            <h1 className="text-3xl font-bold font-headline">Medcord</h1>
+          </div>
           <CardTitle className="text-2xl">{t('select-language')}</CardTitle>
           <CardDescription>{t('select-language-desc')}</CardDescription>
         </CardHeader>
